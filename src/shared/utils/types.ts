@@ -98,3 +98,5 @@ export class GroupStatistics {
   type: string;
   count: number;
 }
+
+export let testMode : boolean = false;

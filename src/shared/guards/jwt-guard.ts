@@ -30,12 +30,13 @@ export class JwtGuard implements CanActivate {
       }
       request['user'] = user;
       request['token'] = token;
-      DateStatistics.registerAction(user.lastAction);
+      if (!config.get('testMode')) {
+        DateStatistics.registerAction(user.lastAction);
+      }
       await user.save();
     } catch (error) {
       throw new UnauthorizedException();
     }
-
     return true;
   }
 

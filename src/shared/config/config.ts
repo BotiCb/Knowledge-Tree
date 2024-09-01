@@ -1,7 +1,7 @@
 import * as convict from 'convict';
-import * as yaml from 'js-yaml';
-import * as fs from 'fs';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 
 interface FirebaseServiceAccount {
   type: string;
@@ -40,6 +40,10 @@ interface Config {
   firebase: {
     service_account: FirebaseServiceAccount;
   };
+  plain: {
+    courseIndexPhotoUrl: string;
+  };
+  testMode: boolean;
   clients: {
     web: {
       frontendUrl: string;
@@ -124,9 +128,80 @@ export const config = convict<Config>({
   },
   plain: {
     courseIndexPhotoUrl: {
+      doc: 'URL for the course index photo',
       format: String,
       default: '',
       env: 'COURSE_INDEX_PHOTO_URL',
+    },
+  },
+  firebase: {
+    service_account: {
+      type: {
+        doc: 'Firebase service account type',
+        format: String,
+        default: '',
+        env: 'FIREBASE_TYPE',
+      },
+      project_id: {
+        doc: 'Firebase project ID',
+        format: String,
+        default: '',
+        env: 'FIREBASE_PROJECT_ID',
+      },
+      private_key_id: {
+        doc: 'Firebase private key ID',
+        format: String,
+        default: '',
+        env: 'FIREBASE_PRIVATE_KEY_ID',
+      },
+      private_key: {
+        doc: 'Firebase private key',
+        format: String,
+        default: '',
+        env: 'FIREBASE_PRIVATE_KEY',
+      },
+      client_email: {
+        doc: 'Firebase client email',
+        format: String,
+        default: '',
+        env: 'FIREBASE_CLIENT_EMAIL',
+      },
+      client_id: {
+        doc: 'Firebase client ID',
+        format: String,
+        default: '',
+        env: 'FIREBASE_CLIENT_ID',
+      },
+      auth_uri: {
+        doc: 'Firebase auth URI',
+        format: String,
+        default: '',
+        env: 'FIREBASE_AUTH_URI',
+      },
+      token_uri: {
+        doc: 'Firebase token URI',
+        format: String,
+        default: '',
+        env: 'FIREBASE_TOKEN_URI',
+      },
+      auth_provider_x509_cert_url: {
+        doc: 'Firebase auth provider X509 cert URL',
+        format: String,
+        default: '',
+        env: 'FIREBASE_AUTH_PROVIDER_X509_CERT_URL',
+      },
+      client_x509_cert_url: {
+        doc: 'Firebase client X509 cert URL',
+        format: String,
+        default: '',
+        env: 'FIREBASE_CLIENT_X509_CERT_URL',
+      },
+      universe_domain: {
+        doc: 'Firebase universe domain',
+        format: String,
+        default: '',
+        env: 'FIREBASE_UNIVERSE_DOMAIN',
+      },
     },
   },
   clients: {
@@ -139,11 +214,11 @@ export const config = convict<Config>({
       },
     },
   },
+  testMode: {
+    format: Boolean,
+    default: false,
+    env: 'TEST_MODE',
+  },
 });
 
-convict.addParser({ extension: ['yml', 'yaml'], parse: yaml.load });
-const envFilePath = './.env.yml';
-if (fs.existsSync(envFilePath)) {
-  config.loadFile(envFilePath);
-}
 config.validate({ allowed: 'strict' });

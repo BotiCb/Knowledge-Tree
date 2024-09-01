@@ -33,6 +33,7 @@ export class CoursesService {
       createdAt: new Date(),
       difficulty: stringToCourseDifficulty(createCourseDto.difficulty),
       price: createCourseDto.price,
+      description: createCourseDto.description
     });
 
     await createdCourse.save();

@@ -6,6 +6,7 @@ import { UserModel } from 'src/shared/schemas/user.schema';
 import { CurrentToken } from 'src/shared/decorators/current-token.decorator';
 import { CourseModel } from 'src/shared/schemas/course.schema';
 import { PopulateService } from './populate.service';
+import { testMode } from 'src/shared/utils/types';
 
 @AdminRole()
 @Controller('populate')
@@ -39,13 +40,20 @@ export class PopulateController {
     await this.populateService.populateProgress(adminToken);
   }
 
+  @Post('enrollCourses')
+  async enrollCourses(@CurrentToken() adminToken: string) {
+    await this.populateService.enrollCourses(adminToken);
+  }
+
   @Post('everything')
   async populateEverything(@CurrentToken() adminToken: string) {
-    await this.populateService.populateUsers(adminToken);
+    console.log(adminToken);
+   await this.populateService.populateUsers(adminToken);
     await this.populateService.randomizeUserCreatedAtDate();
     await this.populateService.populateCourses(adminToken);
     await this.populateService.randomizeCourseDates();
     await this.populateService.enrollCourses(adminToken);
     await this.populateService.populateProgress(adminToken);
   }
+
 }

@@ -23,6 +23,11 @@ export class EmailService {
   }
 
   private async sendMail(to: string, subject: string, text: string, html: string): Promise<void> {
+    if(config.get('testMode'))
+    {
+      return;
+    }
+    
     const mailOptions = {
       from: config.get('email.fromEmail'),
       to,
