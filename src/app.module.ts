@@ -4,9 +4,9 @@ import { AuthModule } from './auth/auth.module';
 import { CoursesModule } from './courses/courses.module';
 import { ArticlesModule } from './articles/articles.module';
 import { SectionModule } from './section/section.module';
-import { PopulateModule } from './populate/populate.module';
+
 
 @Module({
-  imports: [UsersModule, AuthModule, CoursesModule, ArticlesModule, SectionModule, PopulateModule],
+  imports: [UsersModule, AuthModule, CoursesModule, ArticlesModule, SectionModule],
 })
 export class AppModule {}
